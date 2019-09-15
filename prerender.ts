@@ -3,14 +3,16 @@ import 'reflect-metadata';
 import { renderModuleFactory } from '@angular/platform-server';
 import { writeFileSync } from 'fs';
 
-const { AppServerModuleNgFactory } = require('./dist/angular-universal-course-server/main.js');
+const { AppServerModuleNgFactory } = require('./dist-server/main');
 
 renderModuleFactory(AppServerModuleNgFactory, {
     document: '<app-root></app-root>',
     url: '/'
-}).then(html => {
-    writeFileSync('./prerender.html', html);
-    console.log(html);
-}).catch(error => {
-    console.log('Error occured', error);
-});
+})
+    .then(html => {
+        console.log('Pre-rendering successful - prerender.html');
+        writeFileSync('./prerender.html', html);
+    })
+    .catch(error => {
+        console.error('Error occurred:', error);
+    });
